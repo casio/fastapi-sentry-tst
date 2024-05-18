@@ -10,12 +10,12 @@ xpath "string(//head/title)" contains "Swagger UI"
 
 # ---- AUTH
 # create user
-# POST http://localhost:16000/auth/users
-# {
-#   "email": "some@some.net",
-#   "password": "s3cr$t!"
-# }
-# HTTP 201
+POST http://localhost:16000/auth/users
+{
+  "email": "some@some.net",
+  "password": "s3cr$t!"
+}
+HTTP 201
 
 # create token
 POST http://localhost:16000/auth/users/tokens
@@ -38,3 +38,13 @@ HTTP 200
 GET http://localhost:16000/external-service/apis
 Authorization: Bearer {{access-token}}
 HTTP 200
+
+
+# ---- TEARDOWN
+# delete user
+# POST http://localhost:16000/auth/users
+# {
+#   "email": "some@some.net",
+#   "password": "s3cr$t!"
+# }
+# HTTP 201

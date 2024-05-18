@@ -12,4 +12,4 @@ asyncpg==0.28.*
 fastapi==0.103.*
 uvicorn[standard]==0.23.*
 
-sentry-sdk==2.2.*
+sentry-sdk[fastapi]==2.2.*
