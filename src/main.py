@@ -1,15 +1,19 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import AsyncGenerator
 
-import redis.asyncio as aioredis
 import sentry_sdk
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from starlette.middleware.cors import CORSMiddleware
 
+import redis.asyncio as aioredis
 from src import redis
 from src.auth.router import router as auth_router
 from src.config import app_configs, settings
 from src.external_service.router import router as external_service_router
+
+TMPL = Path(__file__).parent / "tmpl"
 
 
 @asynccontextmanager
@@ -47,6 +51,11 @@ sentry_sdk.init(
     # enable_profiling=True,
     profiles_sample_rate=1.0,
 )
+
+
+@app.get("/")
+async def home() -> dict[str, str]:
+    return FileResponse(TMPL / "index.html", media_type="text/html")
 
 
 @app.get("/healthcheck", include_in_schema=False)

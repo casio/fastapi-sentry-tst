@@ -4,6 +4,9 @@ default:
 up:
   docker-compose up -d
 
+down:
+  docker-compose down
+
 kill:
   docker-compose kill
 
@@ -15,6 +18,12 @@ ps:
 
 exec *args:
   docker-compose exec app {{args}}
+
+hurl:
+  hurl dev.hurl
+
+reset-db:
+  psql  postgres://app:app@localhost:65432/app -c 'truncate auth_refresh_token;delete from auth_user where 1 = 1;'
 
 logs *args:
     docker-compose logs {{args}} -f

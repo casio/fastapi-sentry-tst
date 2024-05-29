@@ -1,0 +1,79 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="importmap">
+  {
+    "imports": {
+      "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+    }
+  }
+</script>
+<body class="flex flex-col justify-center items-center h-screen">
+  <h1 class="text-3xl font-bold text-slate-400">trackerrr, arrrh!</h1>
+  <div id="app">
+    <form
+      class="flex flex-col gap-2 bg-gray-100 p-4"
+      @submit.prevent="handleLogin"
+    >
+      <input
+        name="username"
+        v-model="username"
+        class="p-4 border border-gray-300"
+        type="text"
+        autocomplete="off"
+        autofocus="true"
+      />
+      <input
+        type="submit"
+        value="Sign in"
+        class="bg-slate-200 p-2 rounded-sm cursor-pointer hover:bg-slate-300"
+      />
+    </form>
+
+    <hr />
+
+    <code>{{apis}}</code>
+  </div>
+
+  <ul id="messages" class="flex flex-col gap-1 w-48 font-mono"></ul>
+
+  <script type="module">
+    import { createApp, ref } from 'vue'
+
+    function useAPIs() {
+      const apis = ref([])
+      const error = ref(false)
+
+      const fetchAPIs = async () => {
+        error.value = false
+        try {
+          const response = await fetch('/external-service/')
+          const data = await response.json()
+          apis.value = data
+        } catch (err) {
+          error.value = true
+          console.error(err)
+        }
+      }
+      return { apis, error, fetchAPIs }
+    }
+
+    createApp({
+      async setup() {
+        const { apis, error, fetchAPIs } = useAPIs()
+        const username = ref('someone')
+        const userProfile = ref(null)
+        const handleLogin = () => {
+          console.log(username.value)
+        }
+
+        await fetchAPIs()
+        return {
+          apis,
+          handleLogin,
+          userProfile,
+          username
+        }
+      }
+    }).mount('#app')
+  </script>
+</body>

@@ -1,6 +1,6 @@
 # check home
 GET http://localhost:16000/
-HTTP 404
+HTTP 200
 
 # check docs
 GET http://localhost:16000/docs
